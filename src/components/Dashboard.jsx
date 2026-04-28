@@ -100,7 +100,7 @@ export default function Dashboard({ entries, onChanged }) {
           label="Últimos 14 dias"
           value={totals.inWindow}
           hint="Janela quinzenal"
-          accent="emerald"
+          accent="red"
         />
         <SummaryCard
           icon={Activity}
@@ -172,6 +172,7 @@ export default function Dashboard({ entries, onChanged }) {
                   <th className="px-5 py-3 font-semibold">Data</th>
                   <th className="px-5 py-3 font-semibold">Cliente</th>
                   <th className="px-5 py-3 font-semibold">Contrato</th>
+                  <th className="px-5 py-3 font-semibold">Serviço</th>
                   <th className="px-5 py-3 font-semibold">Área</th>
                   <th className="px-5 py-3 font-semibold">Fricção</th>
                   <th className="px-5 py-3 font-semibold">Verbatim</th>
@@ -190,6 +191,9 @@ export default function Dashboard({ entries, onChanged }) {
                     </td>
                     <td className="px-5 py-3 text-slate-300 whitespace-nowrap">
                       {e.contractId}
+                    </td>
+                    <td className="px-5 py-3 text-slate-300 whitespace-nowrap">
+                      {e.serviceType || '—'}
                     </td>
                     <td className="px-5 py-3">
                       <span className="rounded-full bg-slate-800/80 px-2.5 py-1 text-xs font-medium text-slate-200">

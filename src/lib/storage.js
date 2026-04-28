@@ -1,11 +1,20 @@
 const STORAGE_KEY = 'ctt.feedback.entries.v1'
 
 export const PORTAL_AREAS = [
-  'Envios',
-  'Faturação',
-  'Gestão de Contas',
-  'Relatórios',
+  'Preparação de Envios',
+  'Acompanhamento de Objetos',
+  'Faturação e Pagamentos',
+  'Pedidos de Consumíveis',
+  'Gestão de Reclamações',
   'Outros',
+]
+
+export const SERVICE_TYPES = [
+  'Correio Normal',
+  'Correio Registado',
+  'Correio Expresso / Encomendas',
+  'Correio Internacional',
+  'Misto / Vários',
 ]
 
 export const FRICTION_LABELS = {

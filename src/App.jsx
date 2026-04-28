@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { ClipboardList, BarChart3, Truck } from 'lucide-react'
+import { ClipboardList, BarChart3, Mail } from 'lucide-react'
 import FeedbackForm from './components/FeedbackForm.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import { loadEntries } from './lib/storage.js'
 
 const TABS = [
-  { id: 'register', label: 'Registar Contacto', icon: ClipboardList },
+  { id: 'register', label: 'Registar Feedback', icon: ClipboardList },
   { id: 'dashboard', label: 'Painel de Análise', icon: BarChart3 },
 ]
 
@@ -31,22 +31,22 @@ export default function App() {
       <header className="sticky top-0 z-20 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/30">
-              <Truck className="h-5 w-5" strokeWidth={2.6} />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-600 text-white shadow-lg shadow-red-600/30">
+              <Mail className="h-5 w-5" strokeWidth={2.6} />
             </div>
             <div className="leading-tight">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-400">
-                CTT · Digital Experience
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-red-500">
+                CTT Área de Cliente - Empresas
               </p>
               <h1 className="text-base sm:text-lg font-extrabold text-slate-50">
-                Voz do Cliente B2B
+                Voz do Cliente · Contrato de Correio
               </h1>
             </div>
           </div>
 
           <div className="hidden sm:flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1.5 text-xs text-slate-400 ring-1 ring-slate-800">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            v0.1 — interna
+            <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+            v1.0 — interna
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export default function App() {
                   className={[
                     'flex items-center justify-center gap-2 rounded-xl px-3 py-3 text-sm sm:text-base font-semibold transition',
                     active
-                      ? 'bg-emerald-500 text-slate-950 shadow-lg shadow-emerald-500/20'
+                      ? 'bg-red-600 text-white shadow-lg shadow-red-600/20'
                       : 'bg-slate-900/70 text-slate-300 ring-1 ring-slate-800 hover:bg-slate-800/70 hover:text-slate-100',
                   ].join(' ')}
                 >
@@ -88,10 +88,10 @@ export default function App() {
           <div className="mx-auto max-w-3xl">
             <div className="mb-5">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-50">
-                Registar contacto do cliente
+                Registar feedback do cliente
               </h2>
               <p className="mt-1 text-slate-400">
-                Captura rápida — direta ao assunto. Submete um registo por cada contacto.
+                Captura rápida — direta ao assunto. Regista insights de clientes com contrato de correio.
               </p>
             </div>
             <FeedbackForm onSaved={refresh} />
