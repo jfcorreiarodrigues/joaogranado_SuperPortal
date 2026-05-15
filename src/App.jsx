@@ -13,16 +13,10 @@ export default function App() {
   const [tab, setTab] = useState('register')
   const [entries, setEntries] = useState([])
 
-  const refresh = () => setEntries(loadEntries())
+  const refresh = () => loadEntries().then(setEntries).catch(console.error)
 
   useEffect(() => {
     refresh()
-    // Sincroniza entre separadores do browser
-    const onStorage = (e) => {
-      if (e.key === null || e.key.startsWith('ctt.feedback')) refresh()
-    }
-    window.addEventListener('storage', onStorage)
-    return () => window.removeEventListener('storage', onStorage)
   }, [])
 
   return (
@@ -114,7 +108,7 @@ export default function App() {
       </main>
 
       <footer className="mx-auto max-w-6xl px-4 pb-10 pt-2 text-center text-xs text-slate-500 sm:px-6">
-        Feito para a equipa de Digital Experience · CTT · Dados guardados localmente neste dispositivo.
+        Feito para a equipa de Digital Experience · CTT · Dados partilhados em tempo real.
       </footer>
     </div>
   )

@@ -79,9 +79,9 @@ export default function Dashboard({ entries, onChanged }) {
     return { total, avg, topArea, inWindow }
   }, [entries])
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (!confirm('Eliminar este registo?')) return
-    deleteEntry(id)
+    await deleteEntry(id)
     onChanged?.()
   }
 

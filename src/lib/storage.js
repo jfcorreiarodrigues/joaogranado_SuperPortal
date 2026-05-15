@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'ctt.feedback.entries.v1'
+import { supabase } from './supabase.js'
 
 export const PORTAL_AREAS = [
   'Preparação de Envios',
@@ -25,45 +25,63 @@ export const FRICTION_LABELS = {
   5: 'Bloqueio Total',
 }
 
-export function loadEntries() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) return []
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
-  } catch {
-    return []
+export async function loadEntries() {
+  const { data, error } = await supabase
+    .from('feedback_entries')
+    .select('*')
+    .order('created_at', { ascending: false })
+  if (error) throw error
+  return data.map(dbToEntry)
+}
+
+export async function addEntry(entry) {
+  const { data, error } = await supabase
+    .from('feedback_entries')
+    .insert([entryToDb(entry)])
+    .select()
+    .single()
+  if (error) throw error
+  return dbToEntry(data)
+}
+
+export async function deleteEntry(id) {
+  const { error } = await supabase
+    .from('feedback_entries')
+    .delete()
+    .eq('id', id)
+  if (error) throw error
+}
+
+export async function clearEntries() {
+  const { error } = await supabase
+    .from('feedback_entries')
+    .delete()
+    .neq('id', '00000000-0000-0000-0000-000000000000')
+  if (error) throw error
+}
+
+function entryToDb(e) {
+  return {
+    client_id: e.clientId,
+    contract_id: e.contractId,
+    service_type: e.serviceType,
+    portal_area: e.portalArea,
+    friction: e.friction,
+    verbatim: e.verbatim ?? '',
+    insight: e.insight ?? '',
   }
 }
 
-export function saveEntries(entries) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries))
-}
-
-export function addEntry(entry) {
-  const entries = loadEntries()
-  const next = [
-    {
-      id:
-        typeof crypto !== 'undefined' && crypto.randomUUID
-          ? crypto.randomUUID()
-          : `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-      createdAt: new Date().toISOString(),
-      ...entry,
-    },
-    ...entries,
-  ]
-  saveEntries(next)
-  return next
-}
-
-export function deleteEntry(id) {
-  const next = loadEntries().filter((e) => e.id !== id)
-  saveEntries(next)
-  return next
-}
-
-export function clearEntries() {
-  saveEntries([])
-  return []
+function dbToEntry(row) {
+  return {
+    id: row.id,
+    clientId: row.client_id,
+    contractId: row.contract_id,
+    serviceType: row.service_type,
+    portalArea: row.portal_area,
+    friction: row.friction,
+    verbatim: row.verbatim,
+    insight: row.insight,
+    createdAt: row.created_at,
+  }
 }

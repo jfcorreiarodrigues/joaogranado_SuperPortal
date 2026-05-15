@@ -47,9 +47,7 @@ export default function FeedbackForm({ onSaved }) {
     ev.preventDefault()
     if (!validate()) return
     setStatus('submitting')
-    // Simula latência para que o feedback visual seja perceptível
-    await new Promise((r) => setTimeout(r, 450))
-    addEntry({
+    await addEntry({
       clientId: form.clientId.trim(),
       contractId: form.contractId.trim(),
       serviceType: form.serviceType,
