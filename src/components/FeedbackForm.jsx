@@ -26,6 +26,7 @@ export default function FeedbackForm({ onSaved }) {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [status, setStatus] = useState('idle') // idle | submitting | success
+  const [submitError, setSubmitError] = useState(null)
 
   const setField = (key, value) => {
     setForm((f) => ({ ...f, [key]: value }))
@@ -46,16 +47,24 @@ export default function FeedbackForm({ onSaved }) {
   const handleSubmit = async (ev) => {
     ev.preventDefault()
     if (!validate()) return
+    setSubmitError(null)
     setStatus('submitting')
-    await addEntry({
-      clientId: form.clientId.trim(),
-      contractId: form.contractId.trim(),
-      serviceType: form.serviceType,
-      portalArea: form.portalArea,
-      friction: Number(form.friction),
-      verbatim: form.verbatim.trim(),
-      insight: form.insight.trim(),
-    })
+    try {
+      await addEntry({
+        clientId: form.clientId.trim(),
+        contractId: form.contractId.trim(),
+        serviceType: form.serviceType,
+        portalArea: form.portalArea,
+        friction: Number(form.friction),
+        verbatim: form.verbatim.trim(),
+        insight: form.insight.trim(),
+      })
+    } catch (err) {
+      console.error('Falha ao registar feedback:', err)
+      setSubmitError(err?.message || 'Não foi possível registar. Tente novamente.')
+      setStatus('idle')
+      return
+    }
     setStatus('success')
     onSaved?.()
     setTimeout(() => {
@@ -247,6 +256,15 @@ export default function FeedbackForm({ onSaved }) {
       </section>
 
       {/* CTA */}
+      {submitError && (
+        <div
+          role="alert"
+          className="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300"
+        >
+          {submitError}
+        </div>
+      )}
+
       <button
         type="submit"
         disabled={status === 'submitting'}
