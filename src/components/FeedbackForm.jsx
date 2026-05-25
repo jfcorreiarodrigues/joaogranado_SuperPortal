@@ -46,7 +46,10 @@ export default function FeedbackForm({ onSaved }) {
 
   const handleSubmit = async (ev) => {
     ev.preventDefault()
-    if (!validate()) return
+    if (!validate()) {
+      setSubmitError('Preencha os campos obrigatórios assinalados com * antes de submeter.')
+      return
+    }
     setSubmitError(null)
     setStatus('submitting')
     try {
